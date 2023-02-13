@@ -64,12 +64,16 @@
     var labels = jsonfile.jsonarray.map(function (e) {
         return e.UpdatedDate;
     });
-    var data = jsonfile.jsonarray.map(function (e) {
+    var calculatedEnergy = jsonfile.jsonarray.map(function (e) {
         return  e.EnergyCalculated;
     });
-    console.log(data);
+    console.log(calculatedEnergy);
     var enrgryValue = jsonfile.jsonarray.map(function (e) {
         return e.Energy;
+    });
+
+    var enrgryPerUnit = jsonfile.jsonarray.map(function (e) {
+        return e.EnergtPerUnit;
     });
 
     new Chart("myChart", {
@@ -77,11 +81,12 @@
         data: {
             labels: labels,
             datasets: [{
+                label: "Calculated Energy",
                 fill: false,
                 lineTension: 0,
                 backgroundColor: "rgba(0,0,255,1.0)",
                 borderColor: "rgba(0,0,255,0.1)",
-                data: data
+                data: calculatedEnergy
             }]
         },
         options: {
@@ -93,8 +98,11 @@
                 enabled: true,
                 mode: 'single',
                 callbacks: {
-                    beforeFooter: function (tooltipItems, data) {
+                    beforeFooter: function (tooltipItems, calculatedEnergy) {
                         return 'Energy #: ' + enrgryValue[tooltipItems[0].index];
+                    },
+                    footer: function (tooltipItems, calculatedEnergy) {
+                        return 'EnrgryPerUnit: ' + enrgryPerUnit[tooltipItems[0].index];
                     }
                 }
             },
