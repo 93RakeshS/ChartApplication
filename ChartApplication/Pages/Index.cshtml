@@ -1,0 +1,103 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+</script>
+
+<div class="text-center">
+    <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+
+</div>
+
+<script>
+    //var xValues = [50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150];
+    //var yValues = [7, 8, 8, 9, 9, 9, 10, 11, 14, 14, 15];
+    var jsonfile = {
+        "jsonarray": [
+            {
+                "EnergtPerUnit": 6.1,
+                "Energy": 15,
+                "UpdatedDate": "01-01-2022",
+                "EnergyCalculated": 91.5,
+                "UpdatedBy": "A"
+            },
+            {
+                "EnergtPerUnit": 7,
+                "Energy": 40,
+                "UpdatedDate": "01-02-2022",
+                "EnergyCalculated": 280,
+                "UpdatedBy": "B"
+            },
+            {
+                "EnergtPerUnit": 8,
+                "Energy": 30,
+                "UpdatedDate": "01-03-2022",
+                "EnergyCalculated": 240,
+                "UpdatedBy": "C"
+            },
+            {
+                "EnergtPerUnit": 5.5,
+                "Energy": 20,
+                "UpdatedDate": "01-04-2022",
+                "EnergyCalculated": 110,
+                "UpdatedBy": "D"
+            },
+            {
+                "EnergtPerUnit": 9,
+                "Energy": 30,
+                "UpdatedDate": "01-05-2022",
+                "EnergyCalculated": 270,
+                "UpdatedBy": "E"
+            },
+            {
+                "EnergtPerUnit": 10,
+                "Energy": 30,
+                "UpdatedDate": "01-06-2022",
+                "EnergyCalculated": 300,
+                "UpdatedBy": "F"
+            }
+        ]
+    };
+
+    var labels = jsonfile.jsonarray.map(function (e) {
+        return e.UpdatedDate;
+    });
+    var data = jsonfile.jsonarray.map(function (e) {
+        return  e.EnergyCalculated;
+    });
+    console.log(data);
+    var enrgryValue = jsonfile.jsonarray.map(function (e) {
+        return e.Energy;
+    });
+
+    new Chart("myChart", {
+        type: "line",
+        data: {
+            labels: labels,
+            datasets: [{
+                fill: false,
+                lineTension: 0,
+                backgroundColor: "rgba(0,0,255,1.0)",
+                borderColor: "rgba(0,0,255,0.1)",
+                data: data
+            }]
+        },
+        options: {
+            legend: { display: false },
+            scales: {
+                yAxes: [{ ticks: { min: 0, max: 500 } }],
+            },
+            tooltips: {
+                enabled: true,
+                mode: 'single',
+                callbacks: {
+                    beforeFooter: function (tooltipItems, data) {
+                        return 'Energy #: ' + enrgryValue[tooltipItems[0].index];
+                    }
+                }
+            },
+        }
+    });
+</script>
